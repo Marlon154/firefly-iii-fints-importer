@@ -96,8 +96,11 @@ class TransactionsToFireflySender
             $description = $transaction->getDescription1();
         }
 
-        if($regex_match !== "" && $regex_replace !== "") {
-            $description = preg_replace($regex_match, $regex_replace, $description);
+        if (!empty($regex_match) && !empty($regex_replace) && !empty($description)) {
+            $result = preg_replace($regex_match, $regex_replace, $description);
+            if ($result !== null) {
+                $description = $result;
+            }
         }
 
         if($description == null) {
