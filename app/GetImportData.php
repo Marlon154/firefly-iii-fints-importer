@@ -91,6 +91,15 @@ function GetImportData()
                 Logger::info("No transactions found for date range: {$date_from} to {$date_to}");
             }
 
+            // Fix missing names
+            foreach ($transactions as $t) {
+                try {
+                    $t->getName();
+                } catch (\Error $e) {
+                    $t->setName('Unknown');
+                }
+            }
+
             // Clear fallback flag on success
             $session->remove('use_mt940_format');
 
