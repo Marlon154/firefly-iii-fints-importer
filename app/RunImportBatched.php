@@ -1,6 +1,7 @@
 <?php
 namespace App\StepFunction;
 
+use App\ConfigurationFactory;
 use App\TransactionsToFireflySender;
 use App\Step;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -48,12 +49,15 @@ function RunImportWithJS()
     $num_transactions_processed  = $session->get('num_transactions_processed');
     $import_messages             = unserialize($session->get('import_messages'));
     if ($num_transactions_processed >= count($transactions)) {
+        $persisted_fints   = $session->get('persistedFints');
+        $persistence_saved = ConfigurationFactory::save_persistence($session);
         echo $twig->render(
             'done.twig',
             array(
-                'import_messages' => $import_messages,
+                'import_messages'        => $import_messages,
                 'total_num_transactions' => count($transactions),
-                'fints_persistence' => base64_encode($session->get('persistedFints'))
+                'fints_persistence'      => $persisted_fints ? base64_encode($persisted_fints) : '',
+                'persistence_saved'      => $persistence_saved,
             )
         );
         $session->invalidate();
@@ -98,11 +102,15 @@ function RunImportWithoutJS()
             $import_messages = array_merge($import_messages, $result);
         }
     }
+    $persisted_fints   = $session->get('persistedFints');
+    $persistence_saved = ConfigurationFactory::save_persistence($session);
     echo $twig->render(
         'done.twig',
         array(
-            'import_messages' => $import_messages,
-            'total_num_transactions' => count($transactions)
+            'import_messages'        => $import_messages,
+            'total_num_transactions' => count($transactions),
+            'fints_persistence'      => $persisted_fints ? base64_encode($persisted_fints) : '',
+            'persistence_saved'      => $persistence_saved,
         )
     );
     $session->invalidate();

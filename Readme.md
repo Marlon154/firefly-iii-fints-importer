@@ -56,6 +56,8 @@ Thanks to [joBr99](https://github.com/joBr99) for this feature!
 If you need to enter a TAN on every import run, you can paste the persistence string you get presented after the import into the configuration file.
 Treat this string as a secret, as it provides access to your bank account without a TAN!
 
+To avoid copying that string by hand, set `"auto_save_persistence": true` in the configuration file. After a successful login/import, the importer then writes the current persistence token back into `bank_fints_persistence` in that same file automatically, so subsequent runs reuse it without a TAN. If a stored token later becomes invalid (e.g. the bank's SCA window lapsed), it is cleared automatically and you are prompted for a TAN again. This option is off by default; it requires the importer process to have write access to the configuration file, and the file then contains the secret token. Leave it `false` to keep managing `bank_fints_persistence` manually.
+
 
 Headless usage
 -----

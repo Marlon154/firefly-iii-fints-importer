@@ -14,6 +14,8 @@
   "description_regex_replace": "$2 [$1 | $3 | $4]",
   "auto_submit_form_via_js": false,
   "force_mt940": false,
+  "__auto_save_persistence_comment__": "When true, the FinTS persistence token is written back into this config file automatically after a successful login/import, so you never have to copy it manually. The importer process must have write access to this file. The token is a secret. Leave false to keep managing bank_fints_persistence by hand.",
+  "auto_save_persistence": false,
   "choose_account_automation":
   {
     "bank_account_iban": "",
