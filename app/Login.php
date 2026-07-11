@@ -45,7 +45,7 @@ function Login()
         if (!$session->has('fints_persistence')) {
             throw $e;
         }
-        Logger::warning("Login failed with stored persistence token (possibly expired/invalid), retrying without it: " . $e->getMessage());
+        Logger::warn("Login failed with stored persistence token (possibly expired/invalid), retrying without it: " . $e->getMessage());
         $session->remove('fints_persistence');
         // Only touch the config file if the user opted into automatic persistence management.
         if ($session->has('config_file') && $session->get('auto_save_persistence')) {
@@ -70,7 +70,7 @@ function Login()
             $session->set('statement_format', 'mt940');
             Logger::info("Bank supports MT940 format (HIKAZS)");
         } else {
-            Logger::warning("Bank supports neither CAMT nor MT940 - will attempt CAMT first");
+            Logger::warn("Bank supports neither CAMT nor MT940 - will attempt CAMT first");
             $session->set('statement_format', 'camt'); // Default, let exception handling deal with it
         }
 
